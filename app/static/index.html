@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7fb" />
+    <title>Certificate Studio</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/app" aria-label="Certificate Studio home">
+          <span class="brand-mark" aria-hidden="true">C</span>
+          <span class="brand-name">certify<span>studio</span></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="side-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#create"><span class="nav-icon" aria-hidden="true">✳</span> Create certificates</a>
+          <a class="nav-link" href="#progress"><span class="nav-icon nav-grid" aria-hidden="true">▦</span> Generation status</a>
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="help-card">
+          <span class="help-orb" aria-hidden="true">?</span>
+          <strong>Need a hand?</strong>
+          <p>Check the API guide if you need help getting started.</p>
+          <a href="/docs" target="_blank" rel="noreferrer">Open API docs <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="sidebar-foot"><span class="online-dot"></span> All systems operational</div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Workspace</span><span class="crumb-slash">/</span><strong>Create certificates</strong></div>
+          <a class="docs-link" href="/docs" target="_blank" rel="noreferrer"><span aria-hidden="true">↗</span> API documentation</a>
+        </header>
+
+        <div class="page-wrap">
+          <section class="page-heading" id="create">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> CERTIFICATE GENERATOR</div>
+              <h1>Make it official<span class="heading-period">.</span></h1>
+              <p class="page-subtitle">Create polished certificates for everyone in your program, all at once.</p>
+            </div>
+            <div class="heading-badge"><span class="badge-sparkle" aria-hidden="true">✦</span> Bulk made simple</div>
+          </section>
+
+          <div class="workspace-grid">
+            <section class="form-card">
+              <div class="section-header">
+                <div class="section-number">01</div>
+                <div><h2>Event details</h2><p>Tell us what you’re celebrating.</p></div>
+              </div>
+              <div class="fields-row event-fields">
+                <label class="field field-grow">
+                  <span>Event name <span class="required">*</span></span>
+                  <input id="event-name" type="text" maxlength="255" placeholder="e.g. Product Design Masterclass" autocomplete="off" required />
+                </label>
+                <label class="field date-field">
+                  <span>Event date <span class="required">*</span></span>
+                  <input id="event-date" type="date" required />
+                </label>
+              </div>
+
+              <div class="section-divider"></div>
+              <div class="section-header recipients-heading">
+                <div class="section-number">02</div>
+                <div><h2>Your recipients <span class="count-pill" id="recipient-count">0</span></h2><p>Add each person who’ll receive a certificate.</p></div>
+              </div>
+              <div class="recipient-toolbar">
+                <div class="table-labels"><span>FULL NAME</span><span>EMAIL ADDRESS</span><span></span></div>
+                <label class="import-button" for="csv-file"><span aria-hidden="true">↑</span> Import CSV</label>
+                <input id="csv-file" type="file" accept=".csv,text/csv" hidden />
+              </div>
+              <div class="recipient-list" id="recipient-list" aria-live="polite"></div>
+              <button class="add-recipient" id="add-recipient" type="button"><span aria-hidden="true">+</span> Add another recipient</button>
+              <p class="inline-hint">CSV columns: <code>name,email</code> · Up to 500 recipients per batch</p>
+
+              <div class="section-divider"></div>
+              <div class="section-header design-heading">
+                <div class="section-number">03</div>
+                <div><h2>Make it yours <span class="optional-label">OPTIONAL</span></h2><p>A few finishing touches for your certificates.</p></div>
+              </div>
+              <div class="fields-row design-fields">
+                <label class="field">
+                  <span>Border style</span>
+                  <select id="border-style">
+                    <option value="double" selected>Double line</option>
+                    <option value="single">Single line</option>
+                    <option value="thick">Bold frame</option>
+                    <option value="none">No border</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Border color</span>
+                  <span class="color-input-wrap"><input id="border-color" type="color" value="#1e3a8a" /><span id="border-color-text">#1E3A8A</span></span>
+                </label>
+                <label class="field width-field">
+                  <span>Line weight</span>
+                  <span class="range-wrap"><input id="border-width" type="range" min="1" max="10" value="2" /><span id="border-width-value">2 pt</span></span>
+                </label>
+              </div>
+              <label class="upload-zone" for="logo-files">
+                <span class="upload-icon" aria-hidden="true">↥</span>
+                <span class="upload-copy"><strong>Add your logo</strong><small id="logo-summary">PNG or JPG, up to 2 MB each · optional</small></span>
+                <span class="upload-action">Browse files</span>
+                <input id="logo-files" type="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg" multiple hidden />
+              </label>
+
+              <div class="submit-row">
+                <span class="privacy-note"><span aria-hidden="true">♢</span> Your recipient data stays yours.</span>
+                <button class="primary-button" id="create-job" type="button"><span>Create certificates</span><span aria-hidden="true">→</span></button>
+              </div>
+              <div class="form-message" id="form-message" role="status" aria-live="polite"></div>
+            </section>
+
+            <aside class="right-column">
+              <section class="preview-card">
+                <div class="preview-top"><span class="preview-label">LIVE PREVIEW</span><span class="preview-live"><i></i> YOUR DESIGN</span></div>
+                <div class="certificate-preview" id="certificate-preview">
+                  <div class="certificate-frame">
+                    <div class="preview-star" aria-hidden="true">✦</div>
+                    <div class="certificate-kicker">CERTIFICATE OF</div>
+                    <div class="certificate-title">Achievement</div>
+                    <div class="certificate-rule"></div>
+                    <div class="certificate-body">This certificate is proudly presented to</div>
+                    <div class="certificate-name" id="preview-recipient">Your recipient</div>
+                    <div class="certificate-description">For outstanding participation and dedication</div>
+                    <div class="certificate-bottom"><span id="preview-event">Your event name</span><span id="preview-date">EVENT DATE</span></div>
+                  </div>
+                </div>
+                <div class="preview-foot"><span class="preview-check">✓</span> Printed-ready landscape A4 PDF</div>
+              </section>
+
+              <section class="progress-card" id="progress">
+                <div class="progress-title-row"><div><span class="small-overline">BATCH STATUS</span><h2 id="job-title">Your generation</h2></div><span class="status-chip empty" id="job-status">No active batch</span></div>
+                <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+                <div class="progress-meta"><span id="progress-label">Create a batch to see progress</span><strong id="progress-percent">0%</strong></div>
+                <div class="stat-grid">
+                  <div class="stat-item"><span class="stat-indicator total"></span><span class="stat-label">Total</span><strong id="stat-total">—</strong></div>
+                  <div class="stat-item"><span class="stat-indicator success"></span><span class="stat-label">Ready</span><strong id="stat-success">—</strong></div>
+                  <div class="stat-item"><span class="stat-indicator failed"></span><span class="stat-label">Failed</span><strong id="stat-failed">—</strong></div>
+                </div>
+                <div class="job-restore" id="job-restore" hidden>
+                  <label for="job-id-input">Have a batch ID?</label>
+                  <div class="restore-input-row"><input id="job-id-input" type="number" min="1" placeholder="Enter batch ID" /><button id="restore-job" type="button">Track</button></div>
+                </div>
+                <div class="job-id-line" id="job-id-line" hidden><span>Batch ID <strong id="job-id-value"></strong></span><button id="copy-job-id" class="copy-button" type="button">Copy ID</button></div>
+                <div class="certificates-panel" id="certificates-panel" hidden>
+                  <div class="certificates-heading"><strong>Recipient certificates</strong><span id="certificates-summary"></span></div>
+                  <div class="certificate-list" id="certificate-list"></div>
+                </div>
+                <p class="empty-progress" id="empty-progress">Your latest batch will show up here. You can also track an existing batch ID.</p>
+              </section>
+              <div class="assurance-note"><span aria-hidden="true">✦</span><p><strong>Made with care, delivered in seconds.</strong><br />Each certificate is generated as its own downloadable PDF.</p></div>
+            </aside>
+          </div>
+          <footer class="page-footer"><span>Certificate Studio</span><span>Thoughtfully made for moments worth celebrating <span class="footer-heart">♥</span></span></footer>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -46,7 +46,9 @@ With the virtual environment active:
 python run.py
 ```
 
-The development server listens at <http://127.0.0.1:8000>. Interactive API documentation is at <http://127.0.0.1:8000/docs>; ReDoc is at <http://127.0.0.1:8000/redoc>. The health endpoint is `GET /health`.
+The development server listens at <http://127.0.0.1:8000>; open that address in a browser to use the frontend. The interface is also available at <http://127.0.0.1:8000/app>. Interactive API documentation is at <http://127.0.0.1:8000/docs>; ReDoc is at <http://127.0.0.1:8000/redoc>. The health endpoint is `GET /health`.
+
+The frontend lets you create a certificate batch, enter recipients or import a CSV with `name,email` columns, optionally upload logos, customize the border, track generation, and download each completed PDF. To resume tracking a batch after refreshing the page, enter its batch ID in the status panel. Non-browser requests to `/` retain the JSON service-status response.
 
 ## Create a generation job
 

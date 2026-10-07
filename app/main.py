@@ -5,7 +5,10 @@ Initializes the application, sets up the lifespan (database initialization,
 storage directory creation), registers routers, and provides health check endpoints.
 """
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from pathlib import Path
+from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.database import init_db
 from app.routers.jobs import router as jobs_router
@@ -41,16 +44,28 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
+# Serve the browser interface and its assets from the same application.
+STATIC_DIR = Path(__file__).parent / "static"
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 # Register routers
 app.include_router(jobs_router)
 app.include_router(certificates_router)
 
 
+@app.get("/app", include_in_schema=False)
+def frontend():
+    """Serve the bulk certificate generator browser interface."""
+    return FileResponse(STATIC_DIR / "index.html")
+
+
 @app.get("/", tags=["Health"])
-def root():
+def root(request: Request):
     """
-    Root endpoint providing service status and links to documentation.
+    Serve the browser interface to browsers and retain JSON service info for API clients.
     """
+    if "text/html" in request.headers.get("accept", ""):
+        return FileResponse(STATIC_DIR / "index.html")
     return {
         "service": settings.APP_NAME,
         "version": settings.APP_VERSION,
